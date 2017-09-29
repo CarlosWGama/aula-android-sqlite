@@ -1,26 +1,50 @@
 package br.com.carloswgama.sqlite.DAO;
 
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
-public abstract class Banco {
+import br.com.carloswgama.sqlite.Usuario;
 
-    private Context context;
+public abstract class Banco extends SQLiteOpenHelper {
+
+    protected String tabela;
 
     public Banco(Context c) {
-        this.context = c;
+        super(c, "app_teste", null, 1);
+    }
 
-        SQLiteDatabase db = openConnection();
-        db.execSQL("CREATE TABLE IF NOT EXISTS usuarios (" +
-                "id integer primary key autoincrement," +
-                "nome varchar" +
-                ")");
+    protected void update(ContentValues valores, int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] whereValores = {String.valueOf(id)};
+        db.update(tabela, valores, "id = ?", whereValores);
+    }
+
+    public void delete(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        String valores[] = {String.valueOf(id)};
+        db.delete(tabela, "id = ?", valores);
         db.close();
     }
 
-    public SQLiteDatabase openConnection() {
-        return this.context.openOrCreateDatabase(
-                "app", Context.MODE_PRIVATE, null);
+    public void create(ContentValues valores) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert(tabela, null, valores);
+        db.close();
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE usuarios (" +
+                "id integer primary key autoincrement," +
+                "nome varchar" +
+                ")");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
     }
 }

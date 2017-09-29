@@ -1,5 +1,6 @@
 package br.com.carloswgama.sqlite.DAO;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,12 +13,13 @@ public class UsuarioDAO extends Banco {
 
     public UsuarioDAO(Context c) {
         super(c);
+        tabela = "usuarios";
     }
 
     public Usuario get(int id) {
         Usuario usuario = null;
 
-        SQLiteDatabase db = openConnection();
+        SQLiteDatabase db = getReadableDatabase();
         String valores[] = {String.valueOf(id)};
         Cursor c = db.rawQuery("SELECT nome FROM usuarios" +
                 " WHERE id = ?", valores);
@@ -36,7 +38,7 @@ public class UsuarioDAO extends Banco {
     public ArrayList<Usuario> getAll() {
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 
-        SQLiteDatabase db = openConnection();
+        SQLiteDatabase db = getReadableDatabase();
         String valores[] = {};
         Cursor c = db.rawQuery("SELECT id, nome FROM usuarios", valores);
 
@@ -54,23 +56,17 @@ public class UsuarioDAO extends Banco {
     }
 
     public void create(Usuario usuario) {
-        SQLiteDatabase db = openConnection();
-        String valores[] = {usuario.getNome()};
-        db.execSQL("INSERT INTO usuarios (nome) VALUES (?)", valores);
-        db.close();
+        ContentValues valores = new ContentValues();
+        valores.put("nome", usuario.getNome());
+        create(valores);
     }
 
     public void update(Usuario usuario) {
-        SQLiteDatabase db = openConnection();
-        String valores[] = {usuario.getNome(), String.valueOf(usuario.getId())};
-        db.execSQL("UPDATE usuarios SET nome = ? WHERE id = ?", valores);
-        db.close();
+        //String valores[] = {usuario.getNome(), String.valueOf(usuario.getId())};
+        //db.execSQL("UPDATE usuarios SET nome = ? WHERE id = ?", valores);
+        ContentValues valores = new ContentValues();
+        valores.put("nome", usuario.getNome());
+        update(valores, usuario.getId());
     }
 
-    public void delete(Usuario usuario) {
-        SQLiteDatabase db = openConnection();
-        String valores[] = {String.valueOf(usuario.getId())};
-        db.execSQL("DELETE FROM usuarios WHERE id = ?", valores);
-        db.close();
-    }
 }
