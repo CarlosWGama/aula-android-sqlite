@@ -44,7 +44,7 @@ public class AtualizarUsuarioActivity extends AppCompatActivity {
     public void excluirUsuario(View v) {
         Toast.makeText(this, "Usuário excluído",Toast.LENGTH_SHORT)
                 .show();
-        usuarioDAO.delete(usuario);
+        usuarioDAO.delete(usuario.getId());
         finish();
     }
 }

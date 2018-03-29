@@ -1,5 +1,6 @@
 package br.com.carloswgama.sqlite.DAO;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +14,7 @@ public class UsuarioDAO extends Banco {
 
     public UsuarioDAO(Context c) {
         super(c);
+        tabela = "usuarios";
     }
 
 
@@ -55,23 +57,15 @@ public class UsuarioDAO extends Banco {
 
     /* Cria um Usuário */
     public void create(Usuario usuario) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("INSERT INTO usuarios (nome) VALUES ('"+usuario.getNome()+"')");
-        db.close();
+        ContentValues valores = new ContentValues();
+        valores.put("nome", usuario.getNome());
+        create(valores);
     }
 
     /* Atualiza um Usuário */
     public void update(Usuario usuario) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE usuarios SET nome = '"+usuario.getNome()+"' " +
-                "WHERE id = '"+usuario.getId()+"'");
-        db.close();
-    }
-
-    /* Deleta um Usuário */
-    public void delete(Usuario usuario) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM usuarios WHERE id = '"+usuario.getId()+"'");
-        db.close();
+        ContentValues valores = new ContentValues();
+        valores.put("nome", usuario.getNome());
+        update(valores, usuario.getId());
     }
 }
