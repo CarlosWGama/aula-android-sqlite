@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://D:\Documentos\Android\aula-android-sqlite\SQLite.iml" filepath="D:\Documentos\Android\aula-android-sqlite\SQLite.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\Documentos\Android\aula-android-sqlite\app\app.iml" filepath="D:\Documentos\Android\aula-android-sqlite\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/aula-android-sqlite.iml" filepath="$PROJECT_DIR$/aula-android-sqlite.iml" />
     </modules>
   </component>
