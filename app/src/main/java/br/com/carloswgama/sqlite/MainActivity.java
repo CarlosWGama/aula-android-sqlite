@@ -1,12 +1,11 @@
 package br.com.carloswgama.sqlite;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -15,7 +14,7 @@ import br.com.carloswgama.sqlite.util.UsuarioAdapter;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
-
+    private RecyclerView lista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,16 +23,11 @@ public class MainActivity extends AppCompatActivity {
 
         usuarios.add(new Usuario(1, "carlos"));
 
-        ListView lista = (ListView) findViewById(R.id.ls_usuarios);
-        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, AtualizarUsuarioActivity.class);
-                intent.putExtra("usuarioID", usuarios.get(position).getId());
-                intent.putExtra("usuarioNome", usuarios.get(position).getNome());
-                startActivity(intent);
-            }
-        });
+        //RecyView
+        lista = findViewById(R.id.recycleview_usuarios);
+        //Layout Manager
+        lista.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     @Override
@@ -53,10 +47,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void atualizarLista() {
-        ListView lista = (ListView) findViewById(R.id.ls_usuarios);
-
-        UsuarioAdapter adaptador = new UsuarioAdapter(this, usuarios);
-        lista.setAdapter(adaptador);
+        UsuarioAdapter adapter = new UsuarioAdapter(usuarios);
+        lista.setAdapter(adapter);
 
     }
 }
