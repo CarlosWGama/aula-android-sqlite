@@ -9,19 +9,22 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 
+import br.com.carloswgama.sqlite.DAO.UsuarioDAO;
 import br.com.carloswgama.sqlite.util.UsuarioAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
     private RecyclerView lista;
+    private UsuarioDAO usuarioDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        usuarios.add(new Usuario(1, "carlos"));
+        usuarioDAO = new UsuarioDAO(this);
+        usuarios = usuarioDAO.getAll();
 
         //RecyView
         lista = findViewById(R.id.recycleview_usuarios);
@@ -40,15 +43,15 @@ public class MainActivity extends AppCompatActivity {
         EditText campoInput = (EditText) findViewById(R.id.et_usuario);
         String texto = campoInput.getText().toString();
         if (!texto.equals("")) {
-            usuarios.add(new Usuario(usuarios.size()+1, texto));
+            usuarioDAO.create(new Usuario(0, texto));
             atualizarLista();
         }
         campoInput.setText("");
     }
 
     private void atualizarLista() {
+        usuarios = usuarioDAO.getAll();
         UsuarioAdapter adapter = new UsuarioAdapter(usuarios);
         lista.setAdapter(adapter);
-
     }
 }
